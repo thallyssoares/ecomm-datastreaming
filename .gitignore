@@ -1,0 +1,49 @@
+# PRD - documentação de requisitos, não código
+PRD.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Dagster
+dagster/.dagster/
+dagster/dagster_home/
+
+# Docker
+docker-compose.override.yml
+
+# Terraform (se usar no futuro)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+terraform.tfplan
+*.backup
+
+# Logs
+*.log
+logs/
