@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  dagster:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dagster
+    environment:
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - BQ_LOCATION=US
+      - DAGSTER_HOME=/app/dagster_home
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/gcp-credentials.json
+    volumes:
+      - ./:/app
+      - dagster_home:/app/dagster_home
+      - ~/.config/gcloud:/secrets:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - ecom-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+volumes:
+  dagster_home:
+
+networks:
+  ecom-network:
+    external: true
+    name: docker_ecom-network

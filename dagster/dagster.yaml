@@ -1,0 +1,37 @@
+# Dagster instance configuration
+# Este arquivo é carregado automaticamente pelo dagster dev
+
+run_launcher:
+  module: dagster._core.launcher.sync_in_memory_run_launcher
+  config: {}
+
+run_coordinator:
+  module: dagster._core.run_coordinator.queued_run_coordinator
+  config:
+    max_concurrent_runs: 10
+    tag_concurrency_limits: []
+
+compute_logs:
+  module: dagster._core.storage.local_compute_log_manager
+  config:
+    base_dir: "/app/dagster_home/logs"
+
+event_log_storage:
+  module: dagster._core.storage.event_log.sqlite_event_log_storage
+  config:
+    base_dir: "/app/dagster_home"
+
+run_storage:
+  module: dagster._core.storage.runs.sqlite_run_storage
+  config:
+    base_dir: "/app/dagster_home"
+
+schedule_storage:
+  module: dagster._core.storage.schedules.sqlite_schedule_storage
+  config:
+    base_dir: "/app/dagster_home"
+
+local_artifact_storage:
+  module: dagster._core.storage.root_local_artifact_storage
+  config:
+    base_dir: "/app/dagster_home/artifacts"

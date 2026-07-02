@@ -1,0 +1,22 @@
+# Dagster core
+dagster==1.6.4
+dagster-webserver==1.6.4
+dagster-dbt==0.21.1
+
+# GCP
+google-cloud-bigquery==3.16.0
+google-cloud-storage==2.16.0
+
+# Soda
+soda-core-bigquery==3.2.10
+
+# DBT (instalado como dependency do dagster-dbt, mas explicitando versões)
+dbt-core==1.7.9
+dbt-bigquery==1.7.5
+dbt-utils==1.1.1
+dbt-expectations==0.10.2
+
+# Utils
+python-dotenv==1.0.1
+pydantic==2.7.1
+pydantic-settings==2.3.0

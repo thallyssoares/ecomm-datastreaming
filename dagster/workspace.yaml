@@ -1,0 +1,3 @@
+# Workspace configuration for Dagster UI
+load_from:
+  - python_module: src
