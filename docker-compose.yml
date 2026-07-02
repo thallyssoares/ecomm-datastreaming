@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # INFRAESTRUTURA DE STREAMING (Redpanda)
+  # ==========================================
+  redpanda:
+    image: docker.redpandadata/redpandadata/redpanda:v23.3.10
+    container_name: redpanda
+    command:
+      - redpanda
+      - --overprovisioned
+      - --smp=2
+      - --memory=1G
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr=PLAINTEXT://redpanda:9092
+      - --pandaproxy-addr=0.0.0.0:8082
+      - --advertise-pandaproxy-addr=PLAINTEXT://redpanda:8082
+      - --schema-registry-addr=0.0.0.0:8081
+      - --advertise-schema-registry-addr=PLAINTEXT://redpanda:8081
+    ports:
+      - "9092:9092"    # Kafka API
+      - "8081:8081"    # Schema Registry
+      - "8082:8082"    # HTTP Proxy
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health --timeout 3s"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - ecom-network
+
+  redpanda-console:
+    image: docker.redpandadata/redpandadata/console:v2.6.1
+    container_name: redpanda-console
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKERS: "redpanda:9092"
+      KAFKA_SCHEMA_REGISTRY_ENABLED: "true"
+      KAFKA_SCHEMA_REGISTRY_URLS: "http://redpanda:8081"
+      REDPANDA_ADMIN_API_URLS: "http://redpanda:9644"
+      LOG_LEVEL: "info"
+    ports:
+      - "8080:8080"
+    networks:
+      - ecom-network
+
+  # ==========================================
+  # SIMULADOR DE EVENTOS (Producer)
+  # ==========================================
+  simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: ecom-simulator
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - KAFKA_TOPIC=ecommerce-events
+      - EVENTS_PER_SECOND=10
+      - USER_POOL_SIZE=1000
+      - SESSION_DURATION_MINUTES=30
+      - PRODUCT_CATALOG_SIZE=50
+      - CATEGORY_COUNT=10
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    networks:
+      - ecom-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  # ==========================================
+  # CONSUMIDOR BYTEWAX (Kafka -> BigQuery Bronze)
+  # ==========================================
+  bytewax-consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile
+    container_name: bytewax-consumer
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - KAFKA_TOPIC=ecommerce-events
+      - KAFKA_CONSUMER_GROUP=bytewax-consumer-group
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - BQ_DATASET=bronze
+      - BQ_TABLE=raw_clickstream
+      - BQ_LOCATION=US
+      - WORKER_COUNT=1
+      - WORKER_ID=0
+      - BATCH_SIZE=100
+      - BATCH_TIMEOUT_SECONDS=5
+      - LOG_LEVEL=INFO
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    networks:
+      - ecom-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+volumes:
+  redpanda_data:
+
+networks:
+  ecom-network:
+    driver: bridge
