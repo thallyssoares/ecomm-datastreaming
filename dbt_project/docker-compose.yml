@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  dbt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecom-dbt
+    environment:
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - BQ_BRONZE_DATASET=bronze
+      - BQ_SILVER_DATASET=silver
+      - BQ_GOLD_DATASET=gold
+      - BQ_LOCATION=US
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/gcp-credentials.json
+    volumes:
+      - ./:/app
+      - ~/.config/gcloud:/secrets:ro
+      - dbt_profiles:/root/.dbt
+    networks:
+      - ecom-network
+    working_dir: /app
+    command: ["dbt", "debug"]
+
+volumes:
+  dbt_profiles:
+
+networks:
+  ecom-network:
+    external: true
+    name: docker_ecom-network

@@ -1,0 +1,27 @@
+# Copie para profiles.yml e preencha os valores
+# Localização: ~/.dbt/profiles.yml OU dbt_project/profiles.yml
+
+ecom_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('BQ_SILVER_DATASET', 'silver') }}"
+      threads: 4
+      timeout_seconds: 300
+      location: "{{ env_var('BQ_LOCATION', 'US') }}"
+      priority: interactive
+      # impersonate_service_account: "dbt-runner@my-project.iam.gserviceaccount.com"
+
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('BQ_SILVER_DATASET', 'silver') }}"
+      threads: 8
+      timeout_seconds: 600
+      location: "{{ env_var('BQ_LOCATION', 'US') }}"
+      priority: batch
+      keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"

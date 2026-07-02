@@ -1,0 +1,141 @@
+version: 2
+
+models:
+  - name: stg_clickstream
+    description: "Eventos de clickstream limpos e tipados (Silver)"
+    columns:
+      - name: event_id
+        description: "Chave única do evento (idempotência)"
+        tests:
+          - not_null
+          - unique
+
+      - name: user_id
+        description: "ID do usuário anonimizado"
+        tests:
+          - not_null
+
+      - name: session_id
+        description: "ID da sessão de navegação"
+        tests:
+          - not_null
+
+      - name: event_type
+        description: "Tipo do evento no funil"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['page_view', 'view_item', 'add_to_cart', 'purchase']
+
+      - name: event_timestamp
+        description: "Quando o evento OCORREU (Event Time)"
+        tests:
+          - not_null
+
+      - name: processing_timestamp
+        description: "Quando o evento CHEGOU no sistema (Processing Time)"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "ID do produto (FK para dim_products)"
+
+      - name: category_id
+        description: "ID da categoria"
+
+      - name: category_name
+        description: "Nome legível da categoria"
+
+      - name: brand
+        description: "Marca do produto"
+
+      - name: price
+        description: "Preço do produto em reais"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strict_min: false
+
+      - name: currency
+        description: "Moeda (BRL)"
+        tests:
+          - accepted_values:
+              values: ['BRL', 'USD']
+
+      - name: page_url
+        description: "URL da página"
+
+      - name: referrer_url
+        description: "URL de origem"
+
+      - name: user_agent
+        description: "User agent do browser"
+
+      - name: ip_country
+        description: "País pelo IP"
+        tests:
+          - not_null
+
+      - name: device_type
+        description: "Tipo de dispositivo"
+        tests:
+          - accepted_values:
+              values: ['mobile', 'desktop', 'tablet']
+
+      - name: os
+        description: "Sistema operacional"
+
+      - name: browser
+        description: "Navegador"
+
+  - name: stg_products
+    description: "Dimensão de produtos (seed CSV)"
+    columns:
+      - name: product_id
+        description: "PK do produto"
+        tests:
+          - not_null
+          - unique
+
+      - name: category_id
+        description: "FK categoria"
+        tests:
+          - not_null
+
+      - name: category_name
+        description: "Nome da categoria"
+        tests:
+          - not_null
+
+      - name: brand
+        description: "Marca"
+        tests:
+          - not_null
+
+      - name: price
+        description: "Preço atual"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strict_min: false
+
+      - name: currency
+        description: "Moeda"
+        tests:
+          - not_null
+
+      - name: is_active
+        description: "Produto ativo"
+        tests:
+          - not_null
+
+      - name: created_at
+        description: "Data criação"
+        tests:
+          - not_null
+
+      - name: updated_at
+        description: "Última atualização"
+        tests:
+          - not_null

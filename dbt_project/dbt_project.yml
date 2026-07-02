@@ -1,0 +1,53 @@
+name: 'ecom_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'ecom_analytics'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  bronze_dataset: "{{ env_var('BQ_BRONZE_DATASET', 'bronze') }}"
+  silver_dataset: "{{ env_var('BQ_SILVER_DATASET', 'silver') }}"
+  gold_dataset: "{{ env_var('BQ_GOLD_DATASET', 'gold') }}"
+  gcp_project: "{{ env_var('GCP_PROJECT_ID') }}"
+  lookback_hours: 2  # Janela de lookback para late arrivals
+
+models:
+  +materialized: view
+
+  ecom_analytics:
+    staging:
+      +materialized: view
+      +tags: ["staging"]
+    intermediate:
+      +materialized: view
+      +tags: ["intermediate"]
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+
+seeds:
+  ecom_analytics:
+    dim_products:
+      +column_types:
+        product_id: STRING
+        category_id: STRING
+        category_name: STRING
+        brand: STRING
+        price: FLOAT64
+        currency: STRING
+        is_active: BOOLEAN
+        created_at: TIMESTAMP
+        updated_at: TIMESTAMP
+
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['dbt_utils', 'ecom_analytics']

@@ -1,0 +1,165 @@
+version: 2
+
+models:
+  - name: fct_daily_revenue
+    description: "Faturamento bruto acumulado do dia (atualizado a cada execução)"
+    columns:
+      - name: revenue_date
+        description: "Data do faturamento (dia do evento)"
+        tests:
+          - not_null
+          - unique
+
+      - name: gross_revenue
+        description: "Faturamento bruto do dia (soma de purchases)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: orders_count
+        description: "Quantidade de pedidos (compras únicas)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: avg_order_value
+        description: "Ticket médio do dia"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: unique_buyers
+        description: "Compradores únicos no dia"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: updated_at
+        description: "Timestamp da última atualização do dbt"
+
+  - name: fct_conversion_funnel
+    description: "Métricas do funil de conversão (page_view → view_item → add_to_cart → purchase)"
+    columns:
+      - name: funnel_date
+        description: "Data do funil"
+        tests:
+          - not_null
+          - unique
+
+      - name: page_views
+        description: "Total de page_views no dia"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: view_items
+        description: "Total de view_item no dia"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: add_to_carts
+        description: "Total de add_to_cart no dia"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: purchases
+        description: "Total de purchases no dia"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: conversion_rate_view
+        description: "Taxa page_view → view_item (%)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+
+      - name: conversion_rate_cart
+        description: "Taxa view_item → add_to_cart (%)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+
+      - name: conversion_rate_purchase
+        description: "Taxa add_to_cart → purchase (%)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+
+      - name: overall_conversion_rate
+        description: "Taxa geral page_view → purchase (%)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+
+      - name: updated_at
+        description: "Timestamp da última atualização"
+
+  - name: fct_cart_abandonment
+    description: "Taxa de abandono de carrinho por categoria de produto"
+    columns:
+      - name: category_id
+        description: "ID da categoria"
+        tests:
+          - not_null
+
+      - name: category_name
+        description: "Nome da categoria"
+        tests:
+          - not_null
+
+      - name: analysis_date
+        description: "Data da análise"
+        tests:
+          - not_null
+
+      - name: cart_additions
+        description: "Total de add_to_cart na categoria"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: completed_purchases
+        description: "Compras concluídas (mesmo product_id que foi ao carrinho)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: abandoned_carts
+        description: "Carrinhos abandonados (add_to_cart sem purchase)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: abandonment_rate
+        description: "Taxa de abandono (%)"
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+
+      - name: revenue_lost
+        description: "Receita perdida estimada (preço dos abandonados)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: updated_at
+        description: "Timestamp da última atualização"

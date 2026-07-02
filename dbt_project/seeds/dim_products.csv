@@ -1,0 +1,51 @@
+product_id,category_id,category_name,brand,price,currency,is_active,created_at,updated_at
+prod_0000,cat_eletronicos,Eletrônicos,TechPro,2999.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0001,cat_eletronicos,Eletrônicos,TechPro,1299.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0002,cat_eletronicos,Eletrônicos,StyleMax,899.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0003,cat_eletronicos,Eletrônicos,HomeComfort,1999.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0004,cat_eletronicos,Eletrônicos,BeautyGlow,599.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0005,cat_roupas,Roupas e Acessórios,StyleMax,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0006,cat_roupas,Roupas e Acessórios,StyleMax,299.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0007,cat_roupas,Roupas e Acessórios,TechPro,399.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0008,cat_roupas,Roupas e Acessórios,HomeComfort,149.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0009,cat_roupas,Roupas e Acessórios,BeautyGlow,249.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0010,cat_casa,Casa e Decoração,HomeComfort,499.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0011,cat_casa,Casa e Decoração,HomeComfort,799.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0012,cat_casa,Casa e Decoração,StyleMax,349.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0013,cat_casa,Casa e Decoração,TechPro,1299.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0014,cat_casa,Casa e Decoração,BeautyGlow,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0015,cat_beleza,Beleza e Cuidados,BeautyGlow,89.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0016,cat_beleza,Beleza e Cuidados,BeautyGlow,129.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0017,cat_beleza,Beleza e Cuidados,StyleMax,59.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0018,cat_beleza,Beleza e Cuidados,TechPro,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0019,cat_beleza,Beleza e Cuidados,HomeComfort,79.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0020,cat_esportes,Esportes e Lazer,SportForce,299.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0021,cat_esportes,Esportes e Lazer,SportForce,499.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0022,cat_esportes,Esportes e Lazer,StyleMax,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0023,cat_esportes,Esportes e Lazer,HomeComfort,399.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0024,cat_esportes,Esportes e Lazer,BeautyGlow,149.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0025,cat_livros,Livros,BookWorld,49.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0026,cat_livros,Livros,BookWorld,79.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0027,cat_livros,Livros,StyleMax,39.90,BRL,True,2023-01-15 10:00:00,00,2024-01-15 10:00:00
+prod_0028,cat_livros,Livros,TechPro,129.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0029,cat_livros,Livros,HomeComfort,59.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0030,cat_brinquedos,Brinquedos,ToyJoy,99.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0031,cat_brinquedos,Brinquedos,ToyJoy,149.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0032,cat_brinquedos,Brinquedos,StyleMax,79.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0033,cat_brinquedos,Brinquedos,TechPro,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0034,cat_brinquedos,Brinquedos,HomeComfort,59.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0035,cat_automotivo,Automotivo,AutoParts,199.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0036,cat_automotivo,Automotivo,AutoParts,399.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0037,cat_automotivo,Automotivo,StyleMax,89.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0038,cat_automotivo,Automotivo,TechPro,599.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0039,cat_automotivo,Automotivo,HomeComfort,149.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0040,cat_alimentos,Alimentos e Bebidas,FoodieDelight,29.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0041,cat_alimentos,Alimentos e Bebidas,FoodieDelight,49.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0042,cat_alimentos,Alimentos e Bebidas,StyleMax,19.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0043,cat_alimentos,Alimentos e Bebidas,TechPro,79.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0044,cat_alimentos,Alimentos e Bebidas,HomeComfort,39.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0045,cat_pet,Pet Shop,PetCare,59.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0046,cat_pet,Pet Shop,PetCare,99.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0047,cat_pet,Pet Shop,StyleMax,39.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0048,cat_pet,Pet Shop,TechPro,149.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
+prod_0049,cat_pet,Pet Shop,HomeComfort,29.90,BRL,True,2023-01-15 10:00:00,2024-01-15 10:00:00
