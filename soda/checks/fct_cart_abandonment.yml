@@ -1,0 +1,41 @@
+checks for fct_cart_abandonment:
+  # Valores não nulos
+  - missing_count(category_id) = 0
+  - missing_count(category_name) = 0
+  - missing_count(analysis_date) = 0
+  - missing_count(cart_additions) = 0
+  - missing_count(completed_purchases) = 0
+  - missing_count(abandoned_carts) = 0
+  - missing_count(abandonment_rate) = 0
+  - missing_count(revenue_lost) = 0
+
+  # Valores não negativos
+  - cart_additions >= 0
+  - completed_purchases >= 0
+  - abandoned_carts >= 0
+  - revenue_lost >= 0
+
+  # Taxa de abandono entre 0 e 100%
+  - abandonment_rate >= 0
+  - abandonment_rate <= 100
+
+  # Sanity: abandonados = carrinhos - compras
+  - abandoned_carts = cart_additions - completed_purchases
+
+  # Anomalia: taxa de abandono anormalmente alta
+  - anomalous:
+      name: "Detecta abandono anômalo por categoria"
+      metric: abandonment_rate
+      method: "ewma"
+      interval: day
+      sensitivity: 3
+      seasonality: 7
+
+  # Alert: categoria com taxa > 90% (problema crítico)
+  - failed_rows:
+      name: "Taxa de abandono crítica (>90%)"
+      fail_threshold: 0
+      query: |
+        select category_id, category_name, abandonment_rate
+        from ${table}
+        where abandonment_rate > 90

@@ -1,0 +1,13 @@
+# Soda Configuration
+# Configura a conexão BigQuery para scans
+
+data_source ecom_bigquery:
+  type: bigquery
+  project_id: ${GCP_PROJECT_ID}
+  dataset: ${BQ_SILVER_DATASET}
+  location: ${BQ_LOCATION}
+
+# Variáveis de ambiente esperadas:
+# GCP_PROJECT_ID=meu-projeto
+# BQ_SILVER_DATASET=silver
+# BQ_LOCATION=US

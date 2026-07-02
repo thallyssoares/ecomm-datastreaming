@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  soda:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecom-soda
+    environment:
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - BQ_SILVER_DATASET=silver
+      - BQ_GOLD_DATASET=gold
+      - BQ_LOCATION=US
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/gcp-credentials.json
+    volumes:
+      - ./:/app
+      - ~/.config/gcloud:/secrets:ro
+    networks:
+      - ecom-network
+    command: ["soda", "scan", "-d", "ecom_bigquery", "-c", "configuration.yml", "checks/"]
+
+networks:
+  ecom-network:
+    external: true
+    name: docker_ecom-network

@@ -1,0 +1,76 @@
+# Soda Checks para stg_clickstream (Silver)
+# Validações contratuais - se falhar, impede promoção para Gold
+
+checks for stg_clickstream:
+  # 1. Completude - campos obrigatórios não nulos
+  - missing_count(user_id) = 0:
+      name: "user_id não pode ser nulo"
+      identity: "user_id_not_null"
+
+  - missing_count(event_id) = 0:
+      name: "event_id não pode ser nulo"
+      identity: "event_id_not_null"
+
+  - missing_count(event_type) = 0:
+      name: "event_type não pode ser nulo"
+      identity: "event_type_not_null"
+
+  - missing_count(event_timestamp) = 0:
+      name: "event_timestamp não pode ser nulo"
+      identity: "event_timestamp_not_null"
+
+  # 2. Unicidade - idempotência
+  - duplicate_count(event_id) = 0:
+      name: "event_id deve ser único (idempotência)"
+      identity: "event_id_unique"
+
+  # 3. Validade - valores permitidos
+  - invalid_count(event_type) = 0:
+      valid_values: ["page_view", "view_item", "add_to_cart", "purchase"]
+      name: "event_type deve ser válido do funil"
+      identity: "event_type_valid"
+
+  - invalid_count(device_type) = 0:
+      valid_values: ["mobile", "desktop", "tablet"]
+      name: "device_type deve ser válido"
+      identity: "device_type_valid"
+
+  - invalid_count(currency) = 0:
+      valid_values: ["BRL", "USD"]
+      name: "currency deve ser BRL ou USD"
+      identity: "currency_valid"
+
+  # 4. Integridade - ranges
+  - min(price) >= 0:
+      name: "price não pode ser negativo"
+      identity: "price_non_negative"
+
+  # 5. Freshness - dados não podem ser muito antigos
+  - freshness(event_timestamp) < 2h:
+      name: "Dados devem ter menos de 2 horas (streaming ativo)"
+      identity: "freshness_2h"
+      warn_threshold: 1h
+
+  # 6. Volume - detecção de parada total
+  - row_count > 100:
+      name: "Volume mínimo de eventos por hora"
+      identity: "min_volume_per_hour"
+
+  # 7. Schema - colunas obrigatórias
+  - schema:
+      name: "Schema não pode mudar sem aviso"
+      identity: "schema_stability"
+      fail:
+        when required column missing:
+          - event_id
+          - user_id
+          - session_id
+          - event_type
+          - event_timestamp
+          - processing_timestamp
+          - user_agent
+          - ip_country
+          - device_type
+      warn:
+        when column type changed: true
+        when forbidden column present: true

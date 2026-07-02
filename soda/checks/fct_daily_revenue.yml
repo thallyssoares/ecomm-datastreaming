@@ -1,0 +1,47 @@
+# Soda Checks para fct_daily_revenue (Gold)
+# Métricas de negócio - faturamento diário
+
+checks for fct_daily_revenue:
+  # 1. Completude
+  - missing_count(revenue_date) = 0:
+      name: "revenue_date não pode ser nulo"
+
+  - missing_count(gross_revenue) = 0:
+      name: "gross_revenue não pode ser nulo"
+
+  - missing_count(orders_count) = 0:
+      name: "orders_count não pode ser nulo"
+
+  # 2. Unicidade - uma linha por dia
+  - duplicate_count(revenue_date) = 0:
+      name: "Uma linha por dia (revenue_date único)"
+
+  # 3. Validade - valores não negativos
+  - min(gross_revenue) >= 0:
+      name: "Faturamento não pode ser negativo"
+
+  - min(orders_count) >= 0:
+      name: "Pedidos não pode ser negativo"
+
+  - min(unique_buyers) >= 0:
+      name: "Compradores únicos não pode ser negativo"
+
+  # 4. Consistência - ticket médio
+  - avg_order_value >= 0:
+      name: "Ticket médio não pode ser negativo"
+      metric: avg_order_value
+      # avg_order_value = gross_revenue / orders_count (já validado no model)
+
+  # 5. Freshness - atualizado pela Dagster hourly
+  - freshness(updated_at) < 3h:
+      name: "Tabela deve ser atualizada a cada hora"
+      warn_threshold: 2h
+
+  # 6. Anomalia - detecção de queda brusca (comparação com dia anterior)
+  - anomalous:
+      name: "Detecta queda anômala no faturamento"
+      metric: gross_revenue
+      method: "ewma"
+      interval: day
+      sensitivity: 3
+      seasonality: 7

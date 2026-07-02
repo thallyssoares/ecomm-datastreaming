@@ -1,0 +1,37 @@
+checks for fct_conversion_funnel:
+  # Valores não nulos
+  - missing_count(funnel_date) = 0
+  - missing_count(page_views) = 0
+  - missing_count(view_items) = 0
+  - missing_count(add_to_carts) = 0
+  - missing_count(purchases) = 0
+
+  # Valores não negativos
+  - page_views >= 0
+  - view_items >= 0
+  - add_to_carts >= 0
+  - purchases >= 0
+
+  # Taxas de conversão entre 0 e 100%
+  - conversion_rate_view >= 0
+  - conversion_rate_view <= 100
+  - conversion_rate_cart >= 0
+  - conversion_rate_cart <= 100
+  - conversion_rate_purchase >= 0
+  - conversion_rate_purchase <= 100
+  - overall_conversion_rate >= 0
+  - overall_conversion_rate <= 100
+
+  # Sanity: cada etapa não pode ser maior que a anterior
+  - view_items <= page_views
+  - add_to_carts <= view_items
+  - purchases <= add_to_carts
+
+  # Anomalia: queda brusca na conversão geral
+  - anomalous:
+      name: "Detecta queda anômala na conversão geral"
+      metric: overall_conversion_rate
+      method: "ewma"
+      interval: day
+      sensitivity: 3
+      seasonality: 7
