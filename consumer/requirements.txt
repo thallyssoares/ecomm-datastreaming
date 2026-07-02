@@ -1,0 +1,8 @@
+# Bytewax + Kafka + BigQuery
+bytewax==0.18.1
+kafka-python==2.0.2
+google-cloud-bigquery==3.16.0
+google-cloud-core==2.4.1
+pydantic==2.7.1
+pydantic-settings==2.3.0
+python-dotenv==1.0.1

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  bytewax-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bytewax-consumer
+    environment:
+      # Kafka
+      - KAFKA_BOOTSTRAP_SERVERS=redpanda:9092
+      - KAFKA_TOPIC=ecommerce-events
+      - KAFKA_CONSUMER_GROUP=bytewax-consumer-group
+
+      # BigQuery (preencha no .env)
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - BQ_DATASET=bronze
+      - BQ_TABLE=raw_clickstream
+      - BQ_LOCATION=US
+
+      # Bytewax
+      - WORKER_COUNT=1
+      - WORKER_ID=0
+      - BATCH_SIZE=100
+      - BATCH_TIMEOUT_SECONDS=5
+
+      # Logging
+      - LOG_LEVEL=INFO
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    networks:
+      - ecom-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+networks:
+  ecom-network:
+    external: true
+    name: docker_ecom-network
