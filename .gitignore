@@ -1,4 +1,3 @@
-# PRD - documentação de requisitos, não código
 PRD.md
 
 # Python
@@ -32,17 +31,6 @@ dagster/dagster_home/
 
 # Docker
 docker-compose.override.yml
-
-# Terraform (se usar no futuro)
-.terraform/
-*.tfstate
-*.tfstate.*
-*.tfvars
-*.tfvars.json
-*.auto.tfvars
-*.auto.tfvars.json
-terraform.tfplan
-*.backup
 
 # Logs
 *.log

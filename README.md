@@ -56,7 +56,7 @@ Capturar, processar e analisar comportamento de usuários (cliques, visualizaç�
 
 ### Pré-requisitos
 - Docker + Docker Compose
-- Google Cloud Project com billing
+- Google Cloud Project
 - BigQuery API habilitada
 - `gcloud` autenticado: `gcloud auth application-default login`
 
@@ -245,16 +245,6 @@ cd dbt_project && dbt parse
 # Reinicie Dagster
 make dagster-down && make dagster-up
 ```
-
-## 📚 Próximos Passos (Roadmap)
-
-- [ ] CI/CD GitHub Actions (Terraform + Python lint + dbt test)
-- [ ] Terraform para infra GCP (BigQuery datasets, GCS buckets)
-- [ ] Looker Studio dashboard conectado no Gold
-- [ ] Alertas (Slack/Email) via Dagster + Soda
-- [ ] Schema Registry (Avro/Protobuf) no Redpanda
-- [ ] Testes de integração (simulator → bronze → silver → gold)
-
 ## 📄 Licença
 
 MIT
